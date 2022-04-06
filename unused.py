@@ -1,16 +1,15 @@
-import json
-import os, re
+import json, os, re
 
 
 def get_file_paths(root_dir: str, exclude_types: list[str],
-                   exclude_dirs: list[str]):
+                   exclude_dirs: list[str]) -> list[str]:
     '''
     rootDir: 项目路径
     excludeTypes: 忽略的文件类型
     excludeDirs: 忽略的目录
     '''
 
-    filepath_result = []
+    filepath_result: list[str] = []
 
     for dirpath, _, file_names in os.walk(root_dir):
 
@@ -114,3 +113,12 @@ if __name__ == '__main__':
     all_result = images_find_used(image_names=search_names,
                                   file_paths=file_paths)
     print(json.dumps(all_result, indent=2))
+
+    #打印那些未使用的图片
+    all_unused_result = {
+        key: value
+        for key, value in all_result.items() if len(value) == 0
+    }
+
+    print("未使用的图片：")
+    print(json.dumps(all_unused_result, indent=2))
